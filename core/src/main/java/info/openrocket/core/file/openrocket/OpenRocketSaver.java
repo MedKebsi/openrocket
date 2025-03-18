@@ -17,6 +17,7 @@ import info.openrocket.core.logging.SimulationAbort;
 import info.openrocket.core.logging.WarningSet;
 import info.openrocket.core.material.Material;
 import info.openrocket.core.models.wind.MultiLevelPinkNoiseWindModel;
+import info.openrocket.core.models.wind.WindModel;
 import info.openrocket.core.preferences.DocumentPreferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -352,7 +353,9 @@ public class OpenRocketSaver extends RocketSaver {
 		writeln("</wind>");
 
 		if (!cond.getMultiLevelWindModel().getLevels().isEmpty()) {
-			writeln("<wind model=\"multilevel\">");
+			WindModel.AltitudeReference altitudeRef = cond.getMultiLevelWindModel().getAltitudeReference();
+			String altitudeRefString = enumToXMLName(altitudeRef);
+			writeln("<wind model=\"multilevel\" altituderef=\"" + altitudeRefString + "\">");
 			indent++;
 			for (MultiLevelPinkNoiseWindModel.LevelWindModel level : cond.getMultiLevelWindModel().getLevels()) {
 				writeln("<windlevel altitude=\"" + level.getAltitude() + "\" speed=\"" + level.getSpeed() +
@@ -431,8 +434,8 @@ public class OpenRocketSaver extends RocketSaver {
 			indent++;
 			
 			for (Warning w : data.getWarningSet()) {
-				writeln("<warning>");
-				indent++;
+				writeln("<warning type=\"" + w.getClass().getSimpleName() + "\">");
+				indent++; 
 
 				writeElement("id", w.getID().toString());
 				writeElement("description", w.getMessageDescription());
@@ -442,6 +445,15 @@ public class OpenRocketSaver extends RocketSaver {
 					for (RocketComponent c : w.getSources()) {
 						writeElement("source", c.getID());
 					}
+				}
+
+				// Data for specific warning types
+				if (w instanceof Warning.LargeAOA) {
+					writeElement("parameter", ((Warning.LargeAOA) w).getAOA());
+				}
+
+				if (w instanceof Warning.HighSpeedDeployment) {
+					writeElement("parameter", ((Warning.HighSpeedDeployment) w).getSpeed());
 				}
 
 				// We write the whole string content for backwards compatibility with old versions
@@ -631,7 +643,7 @@ public class OpenRocketSaver extends RocketSaver {
 			}
 
 			if (event.getType() == FlightEvent.Type.SIM_WARN) {
-				eventStr += " id=\"" + TextUtil.escapeXML(((Warning) event.getData()).getID()) + "\"";
+				eventStr += " warnid=\"" + TextUtil.escapeXML(((Warning) event.getData()).getID()) + "\"";
 			}
 			
 			if (event.getType() == FlightEvent.Type.SIM_ABORT) {

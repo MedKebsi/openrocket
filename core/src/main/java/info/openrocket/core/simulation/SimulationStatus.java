@@ -445,13 +445,20 @@ public class SimulationStatus implements Cloneable, Monitorable {
 	}
 
 	public void addWarning(Warning warning) {
+		log.trace("Add warning: \"" + warning + "\"");
+		
 		if (null == warnings) {
 			setWarnings(new WarningSet());
 		}
-		if (!warnings.contains(warning)) {
-			log.trace("Add warning: \"" + warning + "\"");
+
+		// Only add a new SIM_WARN event if warning wasn't already present
+		if (warnings.add(warning)) {
+			// For a variety of reasons, the Warning actually added to
+			// the set may not be the one passed in. So we add the Warning
+			// to the set, then read it again.
+			warning = (Warning) warnings.get(warning);
+
 			getFlightDataBranch().addEvent(new FlightEvent(FlightEvent.Type.SIM_WARN, getSimulationTime(), null, warning));
-			warnings.add(warning);
 		}
 	}
 

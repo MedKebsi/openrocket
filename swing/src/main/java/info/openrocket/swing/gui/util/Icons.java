@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import javax.swing.GrayFilter;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -56,7 +55,8 @@ public class Icons {
 		SIMULATION_LISTENER_OK = SIMULATION_STATUS_ICON_MAP.get(Simulation.Status.UPTODATE);
 		SIMULATION_LISTENER_ERROR = SIMULATION_STATUS_ICON_MAP.get(Simulation.Status.OUTDATED);
 	}
-	
+
+	// Note: most of these icons are from famfamicons Silk set
 	
 	public static final Icon FILE_NEW = loadImageIcon("pix/icons/document-new.png", "New document");
 	public static final Icon FILE_OPEN = loadImageIcon("pix/icons/document-open.png", "Open document");
@@ -67,6 +67,7 @@ public class Icons {
 	public static final Icon FILE_PRINT = loadImageIcon("pix/icons/print-design.specs.png", "Print specifications");
 	public static final Icon FILE_IMPORT = loadImageIcon("pix/icons/model_import.png", "Import");
 	public static final Icon IMPORT = loadImageIcon("pix/icons/import.png", "Import");
+	public static final Icon EXPORT = loadImageIcon("pix/icons/export.png", "Export");
 	public static final Icon FILE_EXPORT = loadImageIcon("pix/icons/model_export.png", "Export");
 	public static final Icon SIM_TABLE_EXPORT = loadImageIcon("pix/icons/sim_table_export.png", "Export simulation table");
 	public static final Icon EXPORT_3D = loadImageIcon("pix/icons/model_export3d.png", "Export 3D");
@@ -130,6 +131,9 @@ public class Icons {
 	public static final Icon COMPONENT_HIDDEN_LIGHT = loadImageIcon("pix/icons/component-hidden_light.png", "Component Hidden");
 	public static final Icon COMPONENT_SHOWING_DARK = loadImageIcon("pix/icons/component-showing_dark.png", "Component Showing");
 	public static final Icon COMPONENT_SHOWING_LIGHT = loadImageIcon("pix/icons/component-showing_light.png", "Component Showing");
+
+	public static final Icon LOCKED = loadImageIcon("pix/icons/locked.png", "Locked");
+	public static final Icon UNLOCKED = loadImageIcon("pix/icons/unlocked.png", "Unlocked");
 
 	// MANUFACTURERS ICONS
 	public static final Icon RASAERO = loadImageIcon("pix/icons/RASAero_16.png", "RASAero Icon");
